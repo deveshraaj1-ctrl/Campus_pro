@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Pro - Leave Request</title>
+  <link rel="stylesheet" href="leave_request.css">
+</head>
+<body>
+  <div class="leave-container">
+    <header class="leave-header">
+      <button class="back-btn" onclick="goBack()">←</button>
+      <h1>Leave Request</h1>
+      <div class="status-indicator" id="statusIndicator">Draft</div>
+    </header>
+
+    <form class="leave-form" id="leaveForm">
+      <div class="date-range">
+        <div class="form-group">
+          <label>From Date</label>
+          <input type="date" id="fromDate" required>
+        </div>
+        <div class="form-group">
+          <label>To Date</label>
+          <input type="date" id="toDate" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Leave Type</label>
+        <select id="leaveType" required>
+          <option value="">Select type</option>
+          <option value="sick">Sick Leave</option>
+          <option value="personal">Personal</option>
+          <option value="family">Family Emergency</option>
+          <option value="travel">Travel</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Reason <span class="required">*</span></label>
+        <textarea id="reason" placeholder="Enter detailed reason..." rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Attachments (Optional)</label>
+        <input type="file" id="attachments" multiple accept=".pdf,.jpg,.png">
+        <small>Medical certificate, etc.</small>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span class="btn-text">Submit Request</span>
+        <span class="btn-loading" style="display:none">Sending...</span>
+      </button>
+    </form>
+
+    <div class="success-modal" id="successModal">
+      <div class="modal-content">
+        <div class="success-icon">✅</div>
+        <h3>Leave Request Submitted!</h3>
+        <p>Your request has been sent to admin for approval.</p>
+        <p class="request-id" id="requestId"></p>
+        <button class="modal-btn" onclick="goToHome()">Go to Dashboard</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="leave_request.js"></script>
+</body>
+</html>

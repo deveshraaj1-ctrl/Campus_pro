@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your CSE Timetable - Campus Pro</title>
+  <link rel="stylesheet" href="student.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;" onclick="goBack()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        <h1>CSE Timetable</h1>
+      </div>
+      <span id="status" style="font-size: 12px; color: white; opacity: 0.9;">Sem 6 • 2026</span>
+    </header>
+
+    <div style="flex: 1; padding: 28px 20px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto;">
+      
+      <!-- AI Search -->
+      <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(0,0,0,0.12);">
+        <div style="position: relative;">
+          <input id="searchInput" type="text" placeholder="Search: 'DSA', 'OS', 'Next class'... 🤖" 
+                 style="width: 100%; padding: 18px 20px 18px 50px; border: 2px solid #e5e7eb; border-radius: 16px; font-size: 16px;">
+          <svg style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #6b7280;" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <div id="searchResults" style="margin-top: 16px; min-height: 20px;"></div>
+      </div>
+
+      <!-- Today Section (Monday) -->
+      <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 20px; padding: 24px; text-align: center;">
+        <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">📅 TODAY (Monday)</h2>
+        <div id="todayClasses" style="display: grid; gap: 12px;"></div>
+      </div>
+
+      <!-- Complete Weekly View -->
+      <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(0,0,0,0.12); overflow: hidden;">
+        <div style="background: linear-gradient(135deg, #f8fafc, #e2e8f0); padding: 20px; border-radius: 16px; margin: -24px -24px 24px -24px;">
+          <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin: 0;">📋 Complete Schedule</h3>
+        </div>
+        <div id="weeklySchedule"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // YOUR EXACT CSE TIMETABLE - Semester 6
+    const cseTimetable = {
+      "Monday": {
+        "09:30-10:30": "Lecturer Mentor (Dr Priya V)",
+        "10:30-11:30": "Data Structures & Algorithms (CSE)",
+        "11:30-12:30": "Operating Systems (CSE)", 
+        "01:30-02:30": "Database Management (CSE)",
+        "02:30-03:30": "Project Work Lab-1 (CSE)"
+      },
+      "Tuesday": {
+        "09:30-10:30": "ML & AI (CSE)",
+        "10:30-11:30": "Computer Networks (CSE)",
+        "11:30-12:30": "Software Engineering (CSE)",
+        "01:30-02:30": "Cloud Native Apps (CSE)",
+        "02:30-03:30": "ML & AI Lab (CSE)"
+      },
+      "Wednesday": {
+        "09:30-10:30": "OS Lab (CSE)",
+        "10:30-11:30": "Computer Networks Lab (CSE)",
+        "01:30-02:30": "Break",
+        "02:30-03:30": "Software Engg Lab (CSE)",
+        "03:30-04:30": "Project Work Lab-2 (CSE)"
+      },
+      "Thursday": {
+        "09:30-10:30": "DBMS Lab (CSE)",
+        "10:30-11:30": "ML & AI Lab (CSE)",
+        "01:30-02:30": "Cloud Native Lab (CSE)",
+        "02:30-03:30": "Seminar (CSE)"
+      },
+      "Friday": {
+        "09:30-10:30": "Data Structures Lab (CSE)",
+        "10:30-11:30": "DBMS Lab (CSE)",
+        "01:30-02:30": "Cloud Native Lab (CSE)",
+        "02:30-03:30": "Seminar (CSE)"
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = JSON.parse(localStorage.getItem('campusProUser'));
+      if (!user || user.role !== 'student') window.location.href = 'login.html';
+
+      displayTodayClasses();
+      displayWeeklySchedule();
+      setupSearch();
+    });
+
+    function displayTodayClasses() {
+      const today = new Date().getDay(); // 0=Sun, 1=Mon...
+      const dayNames = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+      const todayDay = dayNames[today];
+      
+      const todayClassesDiv = document.getElementById('todayClasses');
+      const todayData = cseTimetable[todayDay];
+      
+      if (todayData) {
+        todayClassesDiv.innerHTML = Object.entries(todayData).map(([time, subject]) => `
+          <div style="background: rgba(255,255,255,0.2); padding: 16px; border-radius: 12px; backdrop-filter: blur(10px);">
+            <div style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">${subject}</div>
+            <div style="font-size: 14px; opacity: 0.9;">${time}</div>
+          </div>
+        `).join('');
+      } else {
+        todayClassesDiv.innerHTML = '<div style="padding: 20px; opacity: 0.8;">No classes today (Weekend)</div>';
+      }
+    }
+
+    function displayWeeklySchedule() {
+      const weeklyDiv = document.getElementById('weeklySchedule');
+      
+      weeklyDiv.innerHTML = Object.entries(cseTimetable).map(([day, classes]) => `
+        <div style="margin-bottom: 24px;">
+          <h4 style="color: #1e293b; font-weight: 700; font-size: 18px; margin: 0 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb;">${day}</h4>
+          <div style="display: grid; gap: 12px;">
+            ${Object.entries(classes).map(([time, subject]) => `
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: #f8fafc; border-radius: 12px; border-left: 4px solid #10b981;">
+                <div>
+                  <div style="font-weight: 700; color: #1e293b;">${subject}</div>
+                  <div style="color: #6b7280; font-size: 14px;">${time}</div>
+                </div>
+                <span style="background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">${time.split('-')[1].slice(0,5)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function setupSearch() {
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        const results = document.getElementById('searchResults');
+        
+        if (query.length < 2) {
+          results.innerHTML = '';
+          return;
+        }
+
+        const matches = [];
+        Object.entries(cseTimetable).forEach(([day, classes]) => {
+          Object.entries(classes).forEach(([time, subject]) => {
+            if (subject.toLowerCase().includes(query) || day.toLowerCase().includes(query)) {
+              matches.push({ day, time, subject });
+            }
+          });
+        });
+
+        if (matches.length === 0) {
+          results.innerHTML = '<div style="padding: 16px; color: #6b7280; text-align: center; font-style: italic;">No classes found</div>';
+        } else {
+          results.innerHTML = `
+            <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 16px; border-radius: 12px; margin-bottom: 12px;">
+              ✅ Found ${matches.length} classes
+            </div>
+            ${matches.slice(0, 5).map(cls => `
+              <div style="padding: 16px; background: #f8fafc; border-radius: 12px; margin-bottom: 8px; border-left: 4px solid #3b82f6;">
+                <div style="font-weight: 700; color: #1e293b;">${cls.subject}</div>
+                <div style="color: #6b7280; font-size: 14px;">${cls.day} • ${cls.time}</div>
+              </div>
+            `).join('')}
+          `;
+        }
+      });
+    }
+
+    function goBack() {
+      window.location.href = 'student.html';
+    }
+  </script>
+</body>
+</html>

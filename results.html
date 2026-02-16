@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results - Campus Pro</title>
+  <link rel="stylesheet" href="student.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;" onclick="goBack()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        <h1>Results</h1>
+      </div>
+      <div style="font-size: 14px; color: white; opacity: 0.9;">Sem 1 • 2026</div>
+    </header>
+
+    <div style="flex: 1; padding: 28px 20px; overflow-y: auto;">
+      
+      <!-- GPA Card -->
+      <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border-radius: 24px; padding: 32px; text-align: center; margin-bottom: 28px; box-shadow: 0 20px 40px rgba(59,130,246,0.3);">
+        <h2 style="font-size: 36px; font-weight: 800; margin: 0 0 8px 0;">3.85</h2>
+        <p style="font-size: 16px; opacity: 0.95; margin: 0;">GPA • +0.12 from last sem</p>
+        <div style="margin-top: 20px; font-size: 14px; opacity: 0.8;">Rank: 12/180</div>
+      </div>
+
+      <!-- Download Button -->
+      <div style="margin-bottom: 28px;">
+        <button onclick="downloadMarksheet()" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 18px 24px; border-radius: 16px; font-size: 18px; font-weight: 700; box-shadow: 0 12px 32px rgba(16,185,129,0.4);">
+          📥 Download Marksheet PDF
+        </button>
+      </div>
+
+      <!-- Subjects Table -->
+      <div style="background: white; border-radius: 20px; box-shadow: 0 12px 32px rgba(0,0,0,0.12); overflow: hidden;">
+        <div style="background: linear-gradient(135deg, #f8fafc, #e2e8f0); padding: 24px; border-bottom: 1px solid #e2e8f0;">
+          <h3 style="color: #1e293b; font-size: 20px; font-weight: 700; margin: 0;">Semester 1 Results</h3>
+        </div>
+        
+        <div style="padding: 0;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background: #f8fafc;">
+                <th style="padding: 20px 16px 12px; text-align: left; font-weight: 700; color: #374151; font-size: 14px;">Subject</th>
+                <th style="padding: 20px 16px 12px; text-align: right; font-weight: 700; color: #374151; font-size: 14px;">Marks</th>
+                <th style="padding: 20px 16px 12px; text-align: right; font-weight: 700; color: #374151; font-size: 14px;">Grade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 20px 16px; font-weight: 600; color: #1e293b;">Mathematics</td>
+                <td style="padding: 20px 16px; text-align: right; font-weight: 700; color: #10b981;">92/100</td>
+                <td style="padding: 20px 16px; text-align: right;"><span style="background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">A+</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 20px 16px; font-weight: 600; color: #1e293b;">Physics</td>
+                <td style="padding: 20px 16px; text-align: right; font-weight: 700; color: #10b981;">88/100</td>
+                <td style="padding: 20px 16px; text-align: right;"><span style="background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">A</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 20px 16px; font-weight: 600; color: #1e293b;">Chemistry</td>
+                <td style="padding: 20px 16px; text-align: right; font-weight: 700; color: #f59e0b;">78/100</td>
+                <td style="padding: 20px 16px; text-align: right;"><span style="background: #f59e0b; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">B+</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 20px 16px; font-weight: 600; color: #1e293b;">English</td>
+                <td style="padding: 20px 16px; text-align: right; font-weight: 700; color: #10b981;">94/100</td>
+                <td style="padding: 20px 16px; text-align: right;"><span style="background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">A+</span></td>
+              </tr>
+              <tr>
+                <td style="padding: 20px 16px; font-weight: 600; color: #1e293b;">Computer Science</td>
+                <td style="padding: 20px 16px; text-align: right; font-weight: 700; color: #10b981;">85/100</td>
+                <td style="padding: 20px 16px; text-align: right;"><span style="background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">A</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = JSON.parse(localStorage.getItem('campusProUser'));
+      if (!user || user.role !== 'student') {
+        window.location.href = 'login.html';
+      }
+    });
+
+    function goBack() {
+      window.location.href = 'student.html';
+    }
+
+    function downloadMarksheet() {
+      // Create fake PDF download
+      const link = document.createElement('a');
+      link.href = '#';
+      link.download = `Marksheet-${new Date().getFullYear()}.pdf`;
+      link.textContent = 'Download Marksheet';
+      
+      // Show success
+      alert('📥 Marksheet downloaded!\nCheck Downloads folder');
+    }
+  </script>
+</body>
+</html>

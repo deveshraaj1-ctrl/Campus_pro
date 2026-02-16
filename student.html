@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Pro - Student Portal</title>
+  <link rel="stylesheet" href="student.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Campus Pro</h1>
+      <div class="header-right">
+        <div class="academic-year">
+          Jul 1 - May 31 | <span id="progress">65%</span>
+        </div>
+        <div class="notification" onclick="showNotifications()">🔔</div>
+      </div>
+    </header>
+
+    <!-- Today's Classes Timeline -->
+    <div class="schedule-section">
+      <div class="schedule-header">
+        <h3>Today's Classes</h3>
+        <span class="live-indicator" id="liveIndicator">🔴 LIVE</span>
+      </div>
+      <div class="schedule-container">
+        <div class="classes-timeline" id="classesTimeline">
+          <!-- Classes populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-container">
+      <div class="metric">
+        <div class="metric-value" id="attendance-percent">80%</div>
+        <div class="metric-label">Attendance</div>
+        <div class="metric-detail" id="attendance-detail">245/304 days</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">3</div>
+        <div class="metric-label">Classes Today</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">1</div>
+        <div class="metric-label">Pending Leave</div>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <a href="attendance.html" class="action-card" data-action="attendance">
+        <div class="action-icon">👥</div>
+        <div class="action-title">Attendance Sheet</div>
+      </a>
+      
+      <a href="leave_request.html" class="action-card" data-action="leave">
+        <div class="action-icon">📄</div>
+        <div class="action-title">Request Leave</div>
+      </a>
+      
+      <a href="results.html" class="action-card" data-action="results">
+        <div class="action-icon">📊</div>
+        <div class="action-title">Results</div>
+      </a>
+      
+      <a href="timetable.html" class="action-card" data-action="timetable">
+        <div class="action-icon">🕒</div>
+        <div class="action-title">Timetable</div>
+      </a>
+      
+      <a href="#" class="action-card" data-action="gatepass">
+        <div class="action-icon">🚪</div>
+        <div class="action-title">Gate Pass</div>
+      </a>
+      
+      <a href="#" class="action-card" data-action="notices">
+        <div class="action-icon">📢</div>
+        <div class="action-title">Notices</div>
+      </a>
+    </div>
+
+    <!-- Footer Navigation -->
+    <footer class="footer-nav">
+      <div class="nav-item active" data-tab="home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </div>
+      <div class="nav-item" data-tab="qr" onclick="window.location.href='qr-canner.html'">
+  <span class="nav-icon">📱</span>
+  <span class="nav-label">QR Scanner</span>
+  <div class="nav-badge" id="qrBadge" style="background: #898c8b; color: white; border-radius: 10px; padding: 2px 6px; font-size: 11px; font-weight: 700; display: none;">NEW</div>
+</div>
+
+      <div class="nav-item" data-tab="more">
+        <span class="nav-icon">☰</span>
+        <span class="nav-label">More</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="student.js"></script>
+</body>
+</html>

@@ -27,15 +27,14 @@ function initDashboard() {
   `).join('');
   
   // Load leave count from localStorage
-  const leaves = JSON.parse(localStorage.getItem('studentLeaves') || '[]');
+  const leaves = JSON.parse(localStorage.getItem('leaverequests') || '[]');
   const pendingLeaves = leaves.filter(l => l.status === 'pending').length;
-  document.querySelector('.metric-value:nth-child(3)').textContent = pendingLeaves;
-}
+const pendingElement = document.querySelector('.metric:nth-child(3) .metric-value');
+if (pendingElement) pendingElement.textContent = pendingLeaves || '0' ;}
+
 document.querySelector('.nav-item[data-tab="qr"]').addEventListener('click', function(e) {
   e.preventDefault();
   window.location.href = 'qr-scanner.html';
 });
 
-// Show "NEW" badge for QR feature
-// document.getElementById('qrBadge').style.display = 'block';
 

@@ -5,14 +5,14 @@ const demoUsers = {
     password: '123456',
     role: 'student',
     name: 'John Doe',
-    nextPage: 'student.html'  // Your Campus Pro V4
+    nextPage: 'student.html'  
   },
   admin: {
     email: 'admin@campus.com',
     password: 'admin123',
     role: 'admin',
     name: 'Admin User',
-    nextPage: 'admin.html'  // Admin dashboard (future)
+    nextPage: 'Admin_files/admin.html'
   }
 };
 
@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Redirect to role-specific dashboard
       const nextPage = user.nextPage;
+      // const nextPage = role === 'student' ? 'student.html' : 'student.html';
       window.location.href = nextPage;
       
     } else {

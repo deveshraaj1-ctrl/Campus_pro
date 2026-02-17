@@ -39,15 +39,18 @@ function handleSubmit(e) {
   
   if (!validateDates()) return;
   
+  const user = JSON.parse(localStorage.getItem('campusProUser'));
   const formData = {
     id: 'REQ-' + Date.now().toString().slice(-6),
+    studentName: user.name || 'CSE001 - John Doe',
+    studentId: user.id || 'CSE001',
+    studentEmail: user.email || 'student@campus.com',
     fromDate: document.getElementById('fromDate').value,
     toDate: document.getElementById('toDate').value,
     leaveType: document.getElementById('leaveType').value,
     reason: document.getElementById('reason').value,
     status: 'pending',
-    submittedAt: new Date().toLocaleString('en-IN'),
-    studentEmail: JSON.parse(localStorage.getItem('campusProUser')).email
+    submittedAt: new Date().toLocaleString('en-IN')
   };
   
   const submitBtn = document.getElementById('submitBtn');
@@ -59,9 +62,15 @@ function handleSubmit(e) {
   btnLoading.style.display = 'inline';
   
   setTimeout(() => {
-    let leaves = JSON.parse(localStorage.getItem('studentLeaves') || '[]');
-    leaves.unshift(formData);
-    localStorage.setItem('studentLeaves', JSON.stringify(leaves));
+    // ✅ SHARED STORAGE - Admin sees this
+    let allRequests = JSON.parse(localStorage.getItem('leaveRequests') || '[]');
+    allRequests.unshift(formData);
+    localStorage.setItem('leaveRequests', JSON.stringify(allRequests));
+    
+    // ✅ Student copy (your existing)
+    let studentLeaves = JSON.parse(localStorage.getItem('studentLeaves') || '[]');
+    studentLeaves.unshift(formData);
+    localStorage.setItem('studentLeaves', JSON.stringify(studentLeaves));
     
     document.getElementById('requestId').textContent = formData.id;
     document.getElementById('successModal').classList.add('show');
@@ -71,6 +80,7 @@ function handleSubmit(e) {
     btnLoading.style.display = 'none';
   }, 1500);
 }
+
 
 function goBack() {
   window.history.back();

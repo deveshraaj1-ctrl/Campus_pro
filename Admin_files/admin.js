@@ -47,7 +47,7 @@ function handleAdminAction(action) {
     const actions = {
         'approve-leaves': () => {
             showNotification('✅ Opening Leave Approval (5 pending)', 'success');
-            // Navigate to leave approval page
+            window.location.href = 'leaves/leaves.html';         
         },
         'enroll-student': () => {
             showNotification('➕ Open Student Enrollment Form', 'info');

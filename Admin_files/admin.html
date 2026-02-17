@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Pro - Admin Portal</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1>Campus Pro <span class="admin-badge">ADMIN</span></h1>
+            <div class="header-right">
+                <div class="academic-year">
+                    Jul 1 - May 31 | <span id="adminProgress">92%</span>
+                </div>
+                <div class="notification" onclick="showNotifications()">🔔 <span class="badge">3</span></div>
+            </div>
+        </header>
+
+        <!-- Today's Admin Overview -->
+        <div class="schedule-section">
+            <div class="schedule-header">
+                <h3>Today's Tasks</h3>
+                <span class="live-indicator" id="liveIndicator">🔴 LIVE</span>
+            </div>
+            <div class="schedule-container">
+                <div class="classes-timeline admin-timeline" id="adminTimeline">
+                    <!-- Dynamic admin tasks -->
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-container">
+            <div class="metric">
+                <div class="metric-value" id="pendingLeaves">5</div>
+                <div class="metric-label">Pending Leaves</div>
+                <div class="metric-detail">Approve Now</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value" id="pendingResults">12</div>
+                <div class="metric-label">Results Pending</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value" id="noticesDraft">2</div>
+                <div class="metric-label">Notice Drafts</div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <a href="#" class="action-card urgent" data-action="approve-leaves">
+                <div class="action-icon">✅</div>
+                <div class="action-title">Approve Leaves</div>
+                <div class="action-subtitle">5 pending</div>
+            </a>
+            
+            <a href="#" class="action-card" data-action="enroll-new student">
+                <div class="action-icon">➕</div>
+                <div class="action-title">Enroll Student</div>
+            </a>
+            
+            <a href="#" class="action-card" data-action="share-results">
+                <div class="action-icon">📊</div>
+                <div class="action-title">Share Results</div>
+                <div class="action-subtitle">Unit Test 1</div>
+            </a>
+            
+            <a href="#" class="action-card" data-action="send-notice">
+                <div class="action-icon">📢</div>
+                <div class="action-title">Send Notice</div>
+            </a>
+            
+            <a href="#" class="action-card" data-action="upload-timetable">
+                <div class="action-icon">📅</div>
+                <div class="action-title">Upload Timetable</div>
+            </a>
+            <a href="#"class="action-card" data-action="Aprove Gate pass">
+                <div class="action-icon">🚪</div>
+                <div class="action-title">Approv Gate pass</div>
+            </a>
+            
+        </div>
+
+       <footer class="footer-nav">
+    <div class="nav-item active" data-tab="home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+    </div>
+    <div class="nav-item" data-tab="generate-qr">
+        <span class="nav-icon">📱</span>
+        <span class="nav-label">Generate QR</span>
+        <div class="nav-badge live">LIVE</div>
+    </div>
+    <div class="nav-item" data-tab="more">
+        <span class="nav-icon">☰</span>
+        <span class="nav-label">More</span>
+    </div>
+</footer>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

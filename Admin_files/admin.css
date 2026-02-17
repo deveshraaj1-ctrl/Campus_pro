@@ -1,0 +1,342 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: white;
+}
+
+.app {
+    max-width: 400px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    position: relative;
+}
+
+/* Header */
+.header {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.admin-badge {
+    background: rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 15px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.academic-year {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.notification {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.notification:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Schedule Section */
+.schedule-section {
+    padding: 1.5rem;
+}
+
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.schedule-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.live-indicator {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff4444;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Timeline */
+.schedule-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 1rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.classes-timeline, .admin-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.timeline-item {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1rem;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.timeline-item:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateX(5px);
+}
+
+.timeline-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.timeline-content h4 {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+}
+
+.timeline-time {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Metrics */
+.metrics-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 0 1.5rem 1.5rem;
+}
+
+.metric {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1.5rem 1rem;
+    border-radius: 20px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.metric:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.metric-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    margin-bottom: 0.2rem;
+}
+
+.metric-detail {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+/* Quick Actions */
+.quick-actions {
+    padding: 0 1.5rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.action-card {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 1.5rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.action-card:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.action-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.action-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Footer Navigation */
+.footer-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    display: flex;
+    padding: 0.8rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-item {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+}
+
+.nav-icon {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
+}
+
+.nav-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.nav-badge {
+    position: absolute;
+    top: -5px;
+    right: 15px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .app {
+        max-width: 100%;
+    }
+    
+    .metrics-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.8rem;
+    }
+}
+/* Previous CSS + New Styles */
+
+.action-subtitle {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    margin-top: 0.2rem;
+}
+
+.action-card.urgent {
+    border: 2px solid #ff6b6b;
+    background: rgba(255, 107, 107, 0.15);
+}
+
+.action-card.urgent:hover {
+    border-color: #ff5252;
+    background: rgba(255, 107, 107, 0.25);
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff6b6b;
+    color: white;
+    border-radius: 10px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
+.nav-badge {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    background: #00d4aa;
+    color: white;
+    border-radius: 8px;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    animation: pulse 2s infinite;
+}
+
+.nav-badge.live {
+    background: #ff6b6b;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.footer-nav {
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    position: relative;
+}

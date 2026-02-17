@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loggedIn: true
       }));
       
+      
       // Remember me
       const rememberMe = document.getElementById('rememberMe').checked;
       if (rememberMe) {

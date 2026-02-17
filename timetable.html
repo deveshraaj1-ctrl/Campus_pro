@@ -3,20 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your CSE Timetable - Campus Pro</title>
+  <title>CSE Timetable - Campus Pro</title>
   <link rel="stylesheet" href="student.css">
+  <style>
+    .quick-btn { padding: 16px; border: 2px solid #e5e7eb; background: white; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .quick-btn:hover { background: #10b981; color: white; border-color: #10b981; transform: scale(1.02); }
+    .ai-response { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 20px; border-radius: 16px; margin-top: 16px; }
+    .class-card { padding: 20px; background: #f8fafc; border-radius: 16px; border-left: 4px solid #10b981; margin-bottom: 16px; transition: all 0.3s; }
+    .class-card:hover { transform: translateX(8px); box-shadow: 0 8px 24px rgba(16,185,129,0.3); }
+  </style>
 </head>
 <body>
   <div class="app">
-    <!-- Header -->
     <header class="header">
-      <div style="display: flex; align-items: center; gap: 12px; cursor: pointer;" onclick="goBack()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+      <div onclick="goBack()" style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+        <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
           <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
         </svg>
-        <h1>CSE Timetable</h1>
+        <h1>🕒 CSE Timetable</h1>
       </div>
-      <span id="status" style="font-size: 12px; color: white; opacity: 0.9;">Sem 6 • 2026</span>
+      <span id="status" style="font-size: 12px; opacity: 0.9;">Sem 6 • Smart Search 🤖</span>
     </header>
 
     <div style="flex: 1; padding: 28px 20px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto;">
@@ -24,38 +30,46 @@
       <!-- AI Search -->
       <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(0,0,0,0.12);">
         <div style="position: relative;">
-          <input id="searchInput" type="text" placeholder="Search: 'DSA', 'OS', 'Next class'... 🤖" 
-                 style="width: 100%; padding: 18px 20px 18px 50px; border: 2px solid #e5e7eb; border-radius: 16px; font-size: 16px;">
+          <input id="aiSearch" type="text" placeholder="🔍 DSA? OS Lab? Dr Priya? Next class?... (Press Enter)" 
+                 style="width: 100%; padding: 18px 20px 18px 50px; border: 2px solid #e5e7eb; border-radius: 16px; font-size: 16px; font-weight: 500;">
           <svg style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; color: #6b7280;" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>
         </div>
-        <div id="searchResults" style="margin-top: 16px; min-height: 20px;"></div>
+        <div id="aiResponse" style="display: none;"></div>
       </div>
 
-      <!-- Today Section (Monday) -->
-      <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 20px; padding: 24px; text-align: center;">
-        <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0;">📅 TODAY (Monday)</h2>
-        <div id="todayClasses" style="display: grid; gap: 12px;"></div>
+      <!-- Quick Search Buttons -->
+      <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(0,0,0,0.12); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px;">
+        <button onclick="quickSearch('today')" class="quick-btn" style="background: linear-gradient(135deg, #10b981, #059669); color: white;">📅 Today</button>
+        <button onclick="quickSearch('DSA')" class="quick-btn">DSA</button>
+        <button onclick="quickSearch('OS')" class="quick-btn">OS</button>
+        <button onclick="quickSearch('DBMS')" class="quick-btn">DBMS</button>
+        <button onclick="quickSearch('ML')" class="quick-btn">ML & AI</button>
+        <button onclick="quickSearch('next')" class="quick-btn" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white;">⏰ Next</button>
       </div>
 
-      <!-- Complete Weekly View -->
-      <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(0,0,0,0.12); overflow: hidden;">
-        <div style="background: linear-gradient(135deg, #f8fafc, #e2e8f0); padding: 20px; border-radius: 16px; margin: -24px -24px 24px -24px;">
-          <h3 style="color: #1e293b; font-size: 18px; font-weight: 700; margin: 0;">📋 Complete Schedule</h3>
-        </div>
+      <!-- Today's Classes -->
+      <div id="todaySection" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 20px; padding: 24px;">
+        <h2 id="todayTitle" style="margin: 0 0 20px 0; font-size: 20px;">📅 Loading today's schedule...</h2>
+        <div id="todayClasses"></div>
+      </div>
+
+      <!-- Full Weekly Schedule -->
+      <div style="background: white; border-radius: 20px; padding: 24px; box-shadow: 0 12px 32px rgba(0,0,0,0.12);">
+        <h3 style="color: #1e293b; margin: 0 0 24px 0; font-size: 18px; font-weight: 700;">📋 Complete CSE Sem 6 Schedule</h3>
         <div id="weeklySchedule"></div>
       </div>
     </div>
   </div>
 
   <script>
-    // YOUR EXACT CSE TIMETABLE - Semester 6
+    // YOUR EXACT CSE SEM 6 TIMETABLE
     const cseTimetable = {
       "Monday": {
         "09:30-10:30": "Lecturer Mentor (Dr Priya V)",
         "10:30-11:30": "Data Structures & Algorithms (CSE)",
-        "11:30-12:30": "Operating Systems (CSE)", 
+        "11:30-12:30": "Operating Systems (CSE)",
         "01:30-02:30": "Database Management (CSE)",
         "02:30-03:30": "Project Work Lab-1 (CSE)"
       },
@@ -87,92 +101,115 @@
       }
     };
 
+    // Initialize
     document.addEventListener('DOMContentLoaded', function() {
       const user = JSON.parse(localStorage.getItem('campusProUser'));
       if (!user || user.role !== 'student') window.location.href = 'login.html';
-
-      displayTodayClasses();
-      displayWeeklySchedule();
-      setupSearch();
+      
+      initSearch();
+      displayToday();
+      displayWeekly();
     });
 
-    function displayTodayClasses() {
-      const today = new Date().getDay(); // 0=Sun, 1=Mon...
-      const dayNames = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-      const todayDay = dayNames[today];
+    function initSearch() {
+      const searchInput = document.getElementById('aiSearch');
+      searchInput.addEventListener('input', handleSearch);
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') handleSearch();
+      });
+    }
+
+    function handleSearch() {
+      const query = document.getElementById('aiSearch').value.toLowerCase().trim();
+      const response = document.getElementById('aiResponse');
       
-      const todayClassesDiv = document.getElementById('todayClasses');
-      const todayData = cseTimetable[todayDay];
+      if (query.length < 2) {
+        response.style.display = 'none';
+        return;
+      }
+
+      const matches = findMatches(query);
+      showSearchResults(matches, query);
+    }
+
+    function findMatches(query) {
+      const matches = [];
+      Object.entries(cseTimetable).forEach(([day, classes]) => {
+        Object.entries(classes).forEach(([time, subject]) => {
+          if (subject.toLowerCase().includes(query) || 
+              day.toLowerCase().includes(query) ||
+              time.includes(query)) {
+            matches.push({ day, time, subject });
+          }
+        });
+      });
+      return matches;
+    }
+
+    function showSearchResults(matches, query) {
+      const response = document.getElementById('aiResponse');
       
-      if (todayData) {
-        todayClassesDiv.innerHTML = Object.entries(todayData).map(([time, subject]) => `
+      if (matches.length === 0) {
+        response.innerHTML = `❌ No classes found for "${query}"`;
+      } else {
+        response.innerHTML = `
+          <div style="font-weight: 700; font-size: 16px;">✅ Found ${matches.length} classes for "${query}"</div>
+          ${matches.slice(0, 5).map(cls => `
+            <div style="margin-top: 12px; padding: 12px; background: rgba(255,255,255,0.3); border-radius: 8px;">
+              <strong>${cls.subject}</strong><br>
+              <small>${cls.day} • ${cls.time}</small>
+            </div>
+          `).join('')}
+        `;
+      }
+      response.style.display = 'block';
+    }
+
+    function quickSearch(query) {
+      document.getElementById('aiSearch').value = query;
+      handleSearch();
+    }
+
+    function displayToday() {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const today = days[new Date().getDay()];
+      const todayData = cseTimetable[today] || {};
+      
+      document.getElementById('todayTitle').textContent = `📅 TODAY (${today})`;
+      
+      const todayClasses = document.getElementById('todayClasses');
+      if (Object.keys(todayData).length === 0) {
+        todayClasses.innerHTML = '<div style="opacity: 0.8;">No classes today (Weekend)</div>';
+      } else {
+        todayClasses.innerHTML = Object.entries(todayData).map(([time, subject]) => `
           <div style="background: rgba(255,255,255,0.2); padding: 16px; border-radius: 12px; backdrop-filter: blur(10px);">
-            <div style="font-weight: 700; font-size: 16px; margin-bottom: 4px;">${subject}</div>
+            <div style="font-weight: 700; font-size: 16px;">${subject}</div>
             <div style="font-size: 14px; opacity: 0.9;">${time}</div>
           </div>
         `).join('');
-      } else {
-        todayClassesDiv.innerHTML = '<div style="padding: 20px; opacity: 0.8;">No classes today (Weekend)</div>';
       }
     }
 
-    function displayWeeklySchedule() {
+    function displayWeekly() {
       const weeklyDiv = document.getElementById('weeklySchedule');
-      
       weeklyDiv.innerHTML = Object.entries(cseTimetable).map(([day, classes]) => `
         <div style="margin-bottom: 24px;">
-          <h4 style="color: #1e293b; font-weight: 700; font-size: 18px; margin: 0 0 16px 0; padding-bottom: 8px; border-bottom: 2px solid #e5e7eb;">${day}</h4>
+          <h4 style="color: #1e293b; font-weight: 700; font-size: 18px; margin: 0 0 16px 0; padding-bottom: 8px; border-bottom: 3px solid #10b981;">${day}</h4>
           <div style="display: grid; gap: 12px;">
             ${Object.entries(classes).map(([time, subject]) => `
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: #f8fafc; border-radius: 12px; border-left: 4px solid #10b981;">
-                <div>
-                  <div style="font-weight: 700; color: #1e293b;">${subject}</div>
-                  <div style="color: #6b7280; font-size: 14px;">${time}</div>
+              <div class="class-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <div style="font-weight: 700; color: #1e293b; font-size: 16px;">${subject}</div>
+                    <div style="color: #6b7280; font-size: 14px;">${time}</div>
+                  </div>
+                  <span style="background: #10b981; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">${time.split('-')[1]}</span>
                 </div>
-                <span style="background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">${time.split('-')[1].slice(0,5)}</span>
               </div>
             `).join('')}
           </div>
         </div>
       `).join('');
-    }
-
-    function setupSearch() {
-      const searchInput = document.getElementById('searchInput');
-      searchInput.addEventListener('input', function() {
-        const query = this.value.toLowerCase();
-        const results = document.getElementById('searchResults');
-        
-        if (query.length < 2) {
-          results.innerHTML = '';
-          return;
-        }
-
-        const matches = [];
-        Object.entries(cseTimetable).forEach(([day, classes]) => {
-          Object.entries(classes).forEach(([time, subject]) => {
-            if (subject.toLowerCase().includes(query) || day.toLowerCase().includes(query)) {
-              matches.push({ day, time, subject });
-            }
-          });
-        });
-
-        if (matches.length === 0) {
-          results.innerHTML = '<div style="padding: 16px; color: #6b7280; text-align: center; font-style: italic;">No classes found</div>';
-        } else {
-          results.innerHTML = `
-            <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 16px; border-radius: 12px; margin-bottom: 12px;">
-              ✅ Found ${matches.length} classes
-            </div>
-            ${matches.slice(0, 5).map(cls => `
-              <div style="padding: 16px; background: #f8fafc; border-radius: 12px; margin-bottom: 8px; border-left: 4px solid #3b82f6;">
-                <div style="font-weight: 700; color: #1e293b;">${cls.subject}</div>
-                <div style="color: #6b7280; font-size: 14px;">${cls.day} • ${cls.time}</div>
-              </div>
-            `).join('')}
-          `;
-        }
-      });
     }
 
     function goBack() {
